@@ -1,0 +1,36 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-init-job
+spec:
+  ttlSecondsAfterFinished: 300
+  backoffLimit: 4
+  template:
+    spec:
+      restartPolicy: Never   
+      containers:
+      - name: psql
+        image: postgres:17
+        env: 
+        - name: PGHOST
+          value: postgres
+        - name: PGDATABASE
+          value: postgres
+        - name: PGUSER
+          valueFrom:
+            secretKeyRef: { name: postgres-secret, key: username }
+        - name: PGPASSWORD
+          valueFrom:
+            secretKeyRef: { name: postgres-secret, key: password }
+        - name: AUTHCO_PASSWORD
+          valueFrom:
+            secretKeyRef: { name: authco-db-secret, key: password }
+        command: ["sh", "-c"]
+        args:
+        - psql -v ON_ERROR_STOP=1 -v authco_password="$AUTHCO_PASSWORD" -f /sql/init-authco.sql
+        volumeMounts:
+          - { name: sql, mountPath: /sql }
+      volumes:
+      - name: sql
+        configMap:
+          name: db-init-sql

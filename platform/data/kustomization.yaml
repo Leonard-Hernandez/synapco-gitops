@@ -8,8 +8,16 @@ resources:
   - postgres-pvc.yaml 
   - postgres-deployment.yaml 
   - postgres-service.yaml 
+  - db-init-job.yml
 
 secretGenerator:
   - name: postgres-secret
     envs:
       - secrets/postgres.env
+  - name: authco-db-secret
+    envs:
+      - secrets/authco.env
+configMapGenerator:
+  - name: db-init-sql
+    files:
+      - sql/init-authco.sql
