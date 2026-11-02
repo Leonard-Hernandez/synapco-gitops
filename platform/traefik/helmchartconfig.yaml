@@ -1,0 +1,20 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    service:
+      spec:
+        # Only reachable inside the cluster; public traffic enters via cloudflared.
+        # Chart v40 reads service.spec.type (service.type is silently ignored).
+        type: ClusterIP
+    ports:
+      web:
+        forwardedHeaders:
+          # cloudflared runs as a pod and talks plain HTTP to Traefik, but sets
+          # X-Forwarded-Proto: https. Trust X-Forwarded-* only from the pod network
+          # so apps (Spring) build https redirects and issuer URLs.
+          trustedIPs:
+            - 10.42.0.0/16
