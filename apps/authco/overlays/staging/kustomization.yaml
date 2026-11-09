@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: synapco-staging
+
+resources:
+  - https://github.com/Leonard-Hernandez/authco//k8s/base?ref=90b6d00b448191ae073a6be539ba1003a92c7960
+  - ingress.yaml
+
+images: 
+  - name: leonard20/authco 
+    newTag: "90b6d00"
+
+secretGenerator:
+- name: authco-secrets
+  envs:
+    - secrets/authco.env
+
+configMapGenerator:
+  - name: authco-config
+    literals:
+      - DB_URL=jdbc:postgresql://postgres.data.svc.cluster.local:5432/authco
+      - AUTHCO_ISSUER=https://authco-staging.leonardhernandez.com/authco
+      - CORS_ALLOWED_ORIGINS=https://finco-staging.leonardhernandez.com
+      - AUTHCO_TRUSTED_PROXIES=10.42.0.0/16

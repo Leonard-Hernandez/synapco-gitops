@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: authco-ingress
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: authco-staging.leonardhernandez.com
+    http:
+      paths:
+      - path: /authco
+        pathType: Prefix
+        backend:
+          service:
+            name: authco
+            port:
+              number: 8087

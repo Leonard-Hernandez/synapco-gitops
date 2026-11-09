@@ -1,2 +1,1 @@
-platform/data/secrets/postgres.env
-platform/data/secrets/authco.env
+**/secrets/*.env
