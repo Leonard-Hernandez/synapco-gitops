@@ -17,7 +17,11 @@ secretGenerator:
   - name: authco-db-secret
     envs:
       - secrets/authco.env
+  - name: restauco-db-secret
+    envs: 
+      - secrets/restauco.env
+
 configMapGenerator:
   - name: db-init-sql
     files:
-      - sql/init-authco.sql
+      - sql/init-db.sql
