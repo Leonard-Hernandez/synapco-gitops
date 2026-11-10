@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: restauco-ingress
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: restauco-staging.leonardhernandez.com
+    http:
+      paths:
+      - path: /restauco-api
+        pathType: Prefix
+        backend:
+          service:
+            name: restauco
+            port:
+              number: 8089
+  - host: toches-arepas-staging.leonardhernandez.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: restauco-app
+            port:
+              number: 80

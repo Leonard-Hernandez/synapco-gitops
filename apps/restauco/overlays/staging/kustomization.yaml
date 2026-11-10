@@ -1,0 +1,42 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: synapco-staging
+
+resources:
+  - https://github.com/Leonard-Hernandez/restauco//k8s/base?ref=5ab6e5354620c0ca6f3574f34c94b793c98c5b75
+  - ingress.yaml
+
+images: 
+  - name: leonard20/restauco 
+    newTag: "5ab6e53"
+  - name: leonard20/restauco-app
+    newTag: "d4e6917"
+
+secretGenerator:
+- name: restauco-secrets
+  envs:
+    - secrets/restauco.env
+
+configMapGenerator:
+  - name: restauco-config
+    literals:
+      - DB_URL=jdbc:postgresql://postgres.data.svc.cluster.local:5432/restauco
+      - AUTHCO_ISSUER=https://authco-staging.leonardhernandez.com/authco
+      - AUTHCO_INTERNAL_URL=http://authco.synapco-staging.svc.cluster.local:8087/authco
+      - RESTAUCO_RESOURCE_ID=https://restauco-staging.leonardhernandez.com/restauco-api
+      - CORS_ALLOWED_ORIGINS=https://toches-arepas-staging.leonardhernandez.com
+      - RESTAUCO_UPLOADS=/data/uploads
+      - BOOTSTRAP_TENANT=toches-arepas
+      - BOOTSTRAP_OWNER_EMAIL=leonardhernandez02@gmail.com
+      - AUTHCO_RESOURCES=https://restauco-staging.leonardhernandez.com/restauco-api
+  - name: restauco-app-config
+    literals:
+      - API_URL=https://restauco-staging.leonardhernandez.com/restauco-api
+      - AUTH_URL=https://authco-staging.leonardhernandez.com/authco
+      - AUTH_CLIENT_ID=restauco-app
+      - AUTH_RESOURCE=https://restauco-staging.leonardhernandez.com/restauco-api
+      - TENANT=toches-arepas
+      - AUTHCO_SPA_CLIENT_ID=restauco-app
+      - AUTHCO_SPA_CLIENT_REDIRECT_URIS=https://toches-arepas-staging.leonardhernandez.com/auth/callback
+      - AUTHCO_SPA_CLIENT_POST_LOGOUT_REDIRECT_URIS=https://toches-arepas-staging.leonardhernandez.com/
