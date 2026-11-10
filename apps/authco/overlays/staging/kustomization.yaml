@@ -21,5 +21,9 @@ configMapGenerator:
     literals:
       - DB_URL=jdbc:postgresql://postgres.data.svc.cluster.local:5432/authco
       - AUTHCO_ISSUER=https://authco-staging.leonardhernandez.com/authco
-      - CORS_ALLOWED_ORIGINS=https://finco-staging.leonardhernandez.com
+      - CORS_ALLOWED_ORIGINS=https://finco-staging.leonardhernandez.com,https://toches-arepas-staging.leonardhernandez.com
       - AUTHCO_TRUSTED_PROXIES=10.42.0.0/16
+      - AUTHCO_RESOURCES=https://restauco-staging.leonardhernandez.com/restauco-api
+      - AUTHCO_SPA_CLIENT_ID=restauco-app
+      - AUTHCO_SPA_CLIENT_REDIRECT_URIS=https://toches-arepas-staging.leonardhernandez.com/auth/callback
+      - AUTHCO_SPA_CLIENT_POST_LOGOUT_REDIRECT_URIS=https://toches-arepas-staging.leonardhernandez.com/
