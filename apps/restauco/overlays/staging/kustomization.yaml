@@ -11,7 +11,7 @@ images:
   - name: leonard20/restauco 
     newTag: "5ab6e53"
   - name: leonard20/restauco-app
-    newTag: "d4e6917"
+    newTag: "33c9224"
 
 secretGenerator:
 - name: restauco-secrets
