@@ -1,0 +1,41 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: synapco-staging
+
+resources:
+  - https://github.com/Leonard-Hernandez/spaco//k8s/base?ref=c9b74145cdc613fd6d6567c5f2b597eed9421e30
+  - ingress.yaml
+
+images: 
+  - name: leonard20/spaco 
+    newTag: "c9b7414"
+  - name: leonard20/spaco-app
+    newTag: "c9b7414"
+
+secretGenerator:
+- name: spaco-secrets
+  envs:
+    - secrets/spaco.env
+
+configMapGenerator:
+  - name: spaco-config
+    literals:
+      - DB_URL=jdbc:postgresql://postgres.data.svc.cluster.local:5432/spaco
+      - AUTHCO_ISSUER=https://authco-staging.leonardhernandez.com/authco
+      - AUTHCO_INTERNAL_URL=http://authco.synapco-staging.svc.cluster.local:8087/authco
+      - SPACO_RESOURCE_ID=https://spaco-staging.leonardhernandez.com/spaco-api
+      - CORS_ALLOWED_ORIGINS=https://miel-spa-staging.leonardhernandez.com
+      - SPACO_UPLOADS=/data/uploads
+      - BOOTSTRAP_TENANT=miel-spa
+      - BOOTSTRAP_OWNER_EMAIL=leonardhernandez02@gmail.com
+  - name: spaco-app-config
+    literals:
+      - API_URL=https://spaco-staging.leonardhernandez.com/spaco-api
+      - AUTH_URL=https://authco-staging.leonardhernandez.com/authco
+      - AUTH_CLIENT_ID=spaco-app
+      - AUTH_RESOURCE=https://spaco-staging.leonardhernandez.com/spaco-api
+      - TENANT=miel-spa
+      - AUTHCO_SPA_CLIENT_ID=spaco-app
+      - AUTHCO_SPA_CLIENT_REDIRECT_URIS=https://miel-spa-staging.leonardhernandez.com/auth/callback
+      - AUTHCO_SPA_CLIENT_POST_LOGOUT_REDIRECT_URIS=https://miel-spa-staging.leonardhernandez.com/

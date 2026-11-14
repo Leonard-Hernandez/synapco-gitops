@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: spaco-ingress
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: spaco-staging.leonardhernandez.com
+    http:
+      paths:
+      - path: /spaco-api
+        pathType: Prefix
+        backend:
+          service:
+            name: spaco
+            port:
+              number: 8092
+  - host: miel-spa-staging.leonardhernandez.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: spaco-app
+            port:
+              number: 80
