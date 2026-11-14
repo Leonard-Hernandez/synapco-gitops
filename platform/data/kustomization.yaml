@@ -20,6 +20,9 @@ secretGenerator:
   - name: restauco-db-secret
     envs: 
       - secrets/restauco.env
+  - name: spaco-db-secret
+    envs: 
+      - secrets/spaco.env
 
 configMapGenerator:
   - name: db-init-sql

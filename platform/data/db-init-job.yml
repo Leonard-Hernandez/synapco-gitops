@@ -28,9 +28,12 @@ spec:
         - name: RESTAUCO_PASSWORD
           valueFrom:
             secretKeyRef: { name: restauco-db-secret, key: password }
+        - name: SPACO_PASSWORD
+          valueFrom:
+            secretKeyRef: { name: spaco-db-secret, key: password }
         command: ["sh", "-c"]
         args:
-        - psql -v ON_ERROR_STOP=1 -v authco_password="$AUTHCO_PASSWORD" -v restauco_password="$RESTAUCO_PASSWORD" -f /sql/init-db.sql
+        - psql -v ON_ERROR_STOP=1 -v authco_password="$AUTHCO_PASSWORD" -v restauco_password="$RESTAUCO_PASSWORD" -v spaco_password="$SPACO_PASSWORD" -f /sql/init-db.sql
         volumeMounts:
           - { name: sql, mountPath: /sql }
       volumes:
