@@ -9,9 +9,9 @@ resources:
 
 images: 
   - name: leonard20/spaco 
-    newTag: "c9b7414"
+    newTag: "f6560e3"
   - name: leonard20/spaco-app
-    newTag: "c9b7414"
+    newTag: "f6560e3"
 
 secretGenerator:
 - name: spaco-secrets
